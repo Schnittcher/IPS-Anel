@@ -1,0 +1,32 @@
+{
+  "elements": [
+    { "type": "ValidationTextBox", "name": "Username", "caption": "Username" },
+    { "type": "PasswordTextBox", "name": "Password", "caption": "Passwort" }
+],
+  "actions":
+  [
+    {
+      "type": "Configurator",
+      "name": "Configurator",
+      "caption": "Anel Disocvery",
+      "delete": false,
+      "sort": {
+        "column": "IPAddress",
+        "direction": "ascending"
+      },
+      "columns": [
+        {
+          "caption": "IP Address",
+          "name": "IPAddress",
+          "width": "250px"
+        },
+        {
+          "caption": "Devicename",
+          "name": "name",
+          "width": "auto"
+        }
+      ],
+      "values": []
+    }
+  ]
+}

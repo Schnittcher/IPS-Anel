@@ -1,0 +1,18 @@
+{
+    "id": "{13F0B37E-30C9-C043-A5AC-2D9B6A90E9F2}",
+    "name": "AnelHUT",
+    "type": 3,
+    "vendor": "Anel",
+    "aliases": [
+        "Anel HUT"
+    ],
+    "parentRequirements": [
+        "{C8792760-65CF-4C53-B5C7-A30FCC84FEFE}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{7A1272A4-CBDB-46EF-BFC6-DCF4A53D2FC7}"
+    ],
+    "prefix": "ANEL",
+    "url": "https://www.deinsmarthome.info"
+}
