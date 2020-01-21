@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 class AnelDiscovery extends IPSModule
 {
-    
     /**
      * The maximum number of seconds that will be allowed for the discovery request.
      */
@@ -47,8 +46,8 @@ class AnelDiscovery extends IPSModule
                     'moduleID'      => '{13F0B37E-30C9-C043-A5AC-2D9B6A90E9F2}',
                     'configuration' => [
                         'IPAddress' => $Device['IPv4'],
-                        'Username' => $this->ReadPropertyString('Username'),
-                        'Password' => $this->ReadPropertyString('Password')
+                        'Username'  => $this->ReadPropertyString('Username'),
+                        'Password'  => $this->ReadPropertyString('Password')
                     ]
                 ],
             ];
@@ -58,7 +57,7 @@ class AnelDiscovery extends IPSModule
         $Form['actions'][0]['values'] = $Values;
         return json_encode($Form);
     }
-    
+
     public function discoverDevices()
     {
         $discoveryTimeout = time() + self::WS_DISCOVERY_TIMEOUT;
@@ -80,7 +79,7 @@ class AnelDiscovery extends IPSModule
                 continue;
             }
             $this->SendDebug('Receive', $response, 0);
-            $response = explode(":", utf8_decode($response));
+            $response = explode(':', utf8_decode($response));
             $Device = [];
             $Device['IP'] = $from;
             $Device['deviceName'] = $response[1];
