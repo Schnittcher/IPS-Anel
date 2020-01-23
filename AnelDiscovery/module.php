@@ -45,7 +45,7 @@ class AnelDiscovery extends IPSModule
                 [
                     'moduleID'      => '{13F0B37E-30C9-C043-A5AC-2D9B6A90E9F2}',
                     'configuration' => [
-                        'IPAddress' => $Device['IPv4'],
+                        'IPAddress' => $Device['IP'],
                         'Username'  => $this->ReadPropertyString('Username'),
                         'Password'  => $this->ReadPropertyString('Password')
                     ]
