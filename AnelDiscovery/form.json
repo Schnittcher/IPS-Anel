@@ -8,7 +8,7 @@
     {
       "type": "Configurator",
       "name": "Configurator",
-      "caption": "Anel Disocvery",
+      "caption": "Anel Discovery",
       "delete": false,
       "sort": {
         "column": "IPAddress",
