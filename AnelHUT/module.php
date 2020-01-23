@@ -96,9 +96,9 @@ class AnelHUT extends IPSModule
     private function setIO(int $io, bool $value)
     {
         if ($value) {
-            $payload = 'IO_on' . $relais . $this->ReadPropertyString('Username') . $this->ReadPropertyString('Password');
+            $payload = 'IO_on' . $io . $this->ReadPropertyString('Username') . $this->ReadPropertyString('Password');
         } else {
-            $payload = 'IO_off' . $relais . $this->ReadPropertyString('Username') . $this->ReadPropertyString('Password');
+            $payload = 'IO_off' . $io . $this->ReadPropertyString('Username') . $this->ReadPropertyString('Password');
         }
         $this->Send($payload);
     }
