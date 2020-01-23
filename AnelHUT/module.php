@@ -75,7 +75,7 @@ class AnelHUT extends IPSModule
 
         if (fnmatch('IO*', $Ident)) {
             $relais = substr($Ident, -1, 1);
-            $this->setRelais(intval($relais), $Value);
+            $this->setIO(intval($relais), $Value);
         }
     }
     private function Send(string $buffer)
