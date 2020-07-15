@@ -25,6 +25,8 @@ class AnelHUT extends IPSModule
         //Never delete this line!
         parent::ApplyChanges();
         $this->SetReceiveDataFilter('.*' . $this->ReadPropertyString('IPAddress') . '.*');
+
+        $this->RegisterVariableFloat('DeviceTemperature', $this->Translate('Temperature from Device'), '~Temperature');
     }
 
     public function ReceiveData($JSONString)
@@ -52,6 +54,41 @@ class AnelHUT extends IPSModule
                 $this->DisableAction('IO' . $i);
             }
             $this->SetValue('IO' . $i, $tmpValue[2]);
+        }
+        //Index 24 Temperatur
+        $DeviceTemperature = str_replace('°C', '', $result[24]);
+        $this->SetValue('DeviceTemperature', floatval($DeviceTemperature));
+
+        //Index 26 DeviceTyp
+        $DeviceTyp = $result[26]; //a = ADV; i = IO; h = HUT ; o = ONE
+
+        //Index 27 Power Metering //p = yes; n = no
+        $PowerMetering = $result[27];
+        $SensorIndex = 0;
+        switch ($PowerMetering) {
+            case 'p':
+                //$this->LogMessage('Power Metering active', KL_NOTIFY);
+                //Index für Sensor 34
+                $SensorIndex = 34;
+                break;
+            case 'n':
+                //$this->LogMessage('Power Metering inactive', KL_NOTIFY);
+                //Index für Sensor 28
+                $SensorIndex = 28;
+                break;
+            default:
+                //$this->LogMessage('Wrong Power Metering Information: '.$PowerMetering, KL_ERROR);
+                break;
+        }
+        //Sensor yes or no
+        if ($result[$SensorIndex] == 's') {
+            $this->RegisterVariableFloat('SensorTemperature', $this->Translate('Sensor Temperature'), '~Temperature');
+            $this->RegisterVariableFloat('SensorHumidity', $this->Translate('Sensor Humidity'), '~Humidity.F');
+            $this->RegisterVariableInteger('SensorBrightness', $this->Translate('Sensor Brightness'), '~Illumination');
+
+            $this->SetValue('SensorTemperature', floatval($result[$SensorIndex + 1]));
+            $this->SetValue('SensorHumidity', floatval($result[$SensorIndex + 2]));
+            $this->SetValue('SensorBrightness', intval($result[$SensorIndex + 3]));
         }
     }
 

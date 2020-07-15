@@ -3,7 +3,11 @@
         "de": {
             "IP Address": "IP-Adresse",
             "Username": "Benutzername",
-            "Password": "Passwort"
+            "Password": "Passwort",
+            "Temperature from Device": "Temperatur vom Gerät",
+            "Sensor Temperature": "Sensor Temperatur",
+            "Sensor Humidity": "Sensor Luftfeuchte",
+            "Sensor Brightness": "Sensor Helligkeit"
         }
     }
 }
