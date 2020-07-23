@@ -34,7 +34,7 @@ class AnelDiscovery extends IPSModule
         //$Devices = $this->discoverDevices();
 
         $Devices = json_decode($this->GetBuffer('discoveredDevices'), true);
-        IPS_LogMessage('debug',print_r($Devices,true));
+        IPS_LogMessage('debug', print_r($Devices, true));
 
         $Values = [];
 
