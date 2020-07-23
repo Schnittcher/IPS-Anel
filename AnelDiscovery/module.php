@@ -17,6 +17,7 @@ class AnelDiscovery extends IPSModule
         parent::Create();
         $this->RegisterPropertyString('Username', 'admin');
         $this->RegisterPropertyString('Password', 'anel');
+        $this->SetBuffer('discoveredDevices', '{}');
     }
 
     public function ApplyChanges()
@@ -28,32 +29,38 @@ class AnelDiscovery extends IPSModule
     public function GetConfigurationForm()
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $Devices = $this->discoverDevices();
-
         $Values = [];
+        $cachedDiscoveredDevices = $this->GetBuffer('discoveredDevices');
 
-        foreach ($Devices as $Device) {
-            $instanceID = $this->getAnelInstances($Device['IP']);
+        if ($cachedDiscoveredDevices != '{}') {
+            $Devices = json_encode($cachedDiscoveredDevices, true);
+            foreach ($Devices as $Device) {
+                $instanceID = $this->getAnelInstances($Device['IP']);
 
-            $AddValue = [
-                'IPAddress'             => $Device['IP'],
-                'name'                  => $Device['deviceName'],
-                'instanceID'            => $instanceID
-            ];
+                $AddValue = [
+                    'IPAddress'             => $Device['IP'],
+                    'name'                  => $Device['deviceName'],
+                    'instanceID'            => $instanceID
+                ];
 
-            $AddValue['create'] = [
-                [
-                    'moduleID'      => '{13F0B37E-30C9-C043-A5AC-2D9B6A90E9F2}',
-                    'configuration' => [
-                        'IPAddress' => $Device['IP'],
-                        'Username'  => $this->ReadPropertyString('Username'),
-                        'Password'  => $this->ReadPropertyString('Password')
-                    ]
-                ],
-            ];
+                $AddValue['create'] = [
+                    [
+                        'moduleID'      => '{13F0B37E-30C9-C043-A5AC-2D9B6A90E9F2}',
+                        'configuration' => [
+                            'IPAddress' => $Device['IP'],
+                            'Username'  => $this->ReadPropertyString('Username'),
+                            'Password'  => $this->ReadPropertyString('Password')
+                        ]
+                    ],
+                ];
 
-            $Values[] = $AddValue;
+                $Values[] = $AddValue;
+            }
+        } else {
+            $Form['actions'][1]['visiable'] = true;
+            $this->discoverDevices();
         }
+
         $Form['actions'][0]['values'] = $Values;
         return json_encode($Form);
     }
@@ -88,7 +95,11 @@ class AnelDiscovery extends IPSModule
             usleep(10000);
         } while (time() < $discoveryTimeout);
         socket_close($sock);
-        return $discoveryList;
+
+        $this->SetBuffer('discoveredDevices', json_encode($discoveryList));
+
+        $this->UpdateFormField('UpdatePopup', 'visible', false);
+        return;
     }
 
     private function getAnelInstances($IPAddress)

@@ -27,6 +27,18 @@
         }
       ],
       "values": []
+    },
+    {
+      "type": "PopupAlert",
+      "name": "UpdatePopup",
+      "popup": {
+          "items": [
+              {
+                "type": "Label",
+                "caption": "Please wait until the process has finished."
+              }
+          ]
+      }
     }
   ]
 }
