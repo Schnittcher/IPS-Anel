@@ -2,7 +2,9 @@
     "elements": [
         { "type": "ValidationTextBox", "name": "IPAddress", "caption": "IP Address" },
         { "type": "ValidationTextBox", "name": "Username", "caption": "Username" },
-        { "type": "PasswordTextBox", "name": "Password", "caption": "Passwort" }
+        { "type": "PasswordTextBox", "name": "Password", "caption": "Passwort" },
+        { "type": "CheckBox", "name": "IOs", "caption": "Create IOs" },
+        { "type": "CheckBox", "name": "DeviceTemperature", "caption": "Create Temperature" }
     ],
     "actions": [],
     "status": []

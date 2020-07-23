@@ -5,6 +5,7 @@
             "Username": "Benutzername",
             "Password": "Passwort",
             "Create IOs": "IOs anlegen",
+            "Create Device Temperature": "Gerätetemperatur anlegen",
             "Temperature from Device": "Temperatur vom Gerät",
             "Sensor Temperature": "Sensor Temperatur",
             "Sensor Humidity": "Sensor Luftfeuchte",

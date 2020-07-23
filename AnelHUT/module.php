@@ -13,6 +13,7 @@ class AnelHUT extends IPSModule
         $this->RegisterPropertyString('Username', '');
         $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyBoolean('IOs', false);
+        $this->RegisterPropertyBoolean('DeviceTemperature', false);
     }
 
     public function Destroy()
@@ -27,7 +28,9 @@ class AnelHUT extends IPSModule
         parent::ApplyChanges();
         $this->SetReceiveDataFilter('.*' . $this->ReadPropertyString('IPAddress') . '.*');
 
-        $this->RegisterVariableFloat('DeviceTemperature', $this->Translate('Temperature from Device'), '~Temperature');
+        if ($this->ReadPropertyBoolean('DeviceTemperature')) {
+            $this->RegisterVariableFloat('DeviceTemperature', $this->Translate('Temperature from Device'), '~Temperature');
+        }
     }
 
     public function ReceiveData($JSONString)
@@ -62,8 +65,10 @@ class AnelHUT extends IPSModule
         }
 
         //Index 24 Temperatur
-        $DeviceTemperature = str_replace('°C', '', $result[24]);
-        $this->SetValue('DeviceTemperature', floatval($DeviceTemperature));
+        if ($this->ReadPropertyBoolean('DeviceTemperature')) {
+            $DeviceTemperature = str_replace('°C', '', $result[24]);
+            $this->SetValue('DeviceTemperature', floatval($DeviceTemperature));
+        }
 
         //Index 26 DeviceTyp
         $DeviceTyp = $result[26]; //a = ADV; i = IO; h = HUT ; o = ONE
@@ -124,7 +129,7 @@ class AnelHUT extends IPSModule
     private function Send(string $buffer)
     {
         $JSON = json_encode(['DataID' => '{C8792760-65CF-4C53-B5C7-A30FCC84FEFE}', 'ClientIP' => $this->ReadPropertyString('IPAddress'), 'ClientPort' => 75, 'Buffer' => $buffer]);
-        $this->SendDebug(__FUNCTION__,$JSON,0);
+        $this->SendDebug(__FUNCTION__, $JSON, 0);
         $this->SendDataToParent($JSON);
     }
 
