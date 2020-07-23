@@ -123,7 +123,9 @@ class AnelHUT extends IPSModule
     }
     private function Send(string $buffer)
     {
-        $this->SendDataToParent(json_encode(['DataID' => '{C8792760-65CF-4C53-B5C7-A30FCC84FEFE}', 'ClientIP' => $this->ReadPropertyString('IPAddress'), 'ClientPort' => 75, 'Buffer' => $buffer]));
+        $JSON = json_encode(['DataID' => '{C8792760-65CF-4C53-B5C7-A30FCC84FEFE}', 'ClientIP' => $this->ReadPropertyString('IPAddress'), 'ClientPort' => 75, 'Buffer' => $buffer]);
+        $this->SendDebug(__FUNCTION__,$JSON,0);
+        $this->SendDataToParent($JSON);
     }
 
     private function setRelais(int $relais, bool $value)
