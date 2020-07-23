@@ -4,7 +4,7 @@
         { "type": "ValidationTextBox", "name": "Username", "caption": "Username" },
         { "type": "PasswordTextBox", "name": "Password", "caption": "Passwort" },
         { "type": "CheckBox", "name": "IOs", "caption": "Create IOs" },
-        { "type": "CheckBox", "name": "DeviceTemperature", "caption": "Create Temperature" }
+        { "type": "CheckBox", "name": "DeviceTemperature", "caption": "Create Device Temperature" }
     ],
     "actions": [],
     "status": []
