@@ -12,6 +12,7 @@ class AnelHUT extends IPSModule
         $this->RegisterPropertyString('IPAddress', '');
         $this->RegisterPropertyString('Username', '');
         $this->RegisterPropertyString('Password', '');
+        $this->RegisterPropertyBoolean('IOs', false);
     }
 
     public function Destroy()
@@ -34,6 +35,8 @@ class AnelHUT extends IPSModule
         $data = json_decode($JSONString);
         $result = explode(':', utf8_decode($data->Buffer));
 
+        $this->SendDebug(__FUNCTION__, utf8_decode($data->Buffer), 0);
+
         $indexRelais = 5;
         $indexIOs = 15;
         for ($i = 1; $i <= 8; $i++) {
@@ -45,16 +48,19 @@ class AnelHUT extends IPSModule
             $this->SetValue('Relay' . $i, $tmpValue[1]);
 
             //IOs
-            $indexIOs++;
-            $this->RegisterVariableBoolean('IO' . $i, strstr($result[$indexIOs], ',', true), '~Switch');
-            $tmpValue = explode(',', $result[$indexIOs]);
-            if ($tmpValue[1] == 0) {
-                $this->EnableAction('IO' . $i);
-            } else {
-                $this->DisableAction('IO' . $i);
+            if ($this->ReadPropertyBoolean('IOs')) {
+                $indexIOs++;
+                $this->RegisterVariableBoolean('IO' . $i, strstr($result[$indexIOs], ',', true), '~Switch');
+                $tmpValue = explode(',', $result[$indexIOs]);
+                if ($tmpValue[1] == 0) {
+                    $this->EnableAction('IO' . $i);
+                } else {
+                    $this->DisableAction('IO' . $i);
+                }
+                $this->SetValue('IO' . $i, $tmpValue[2]);
             }
-            $this->SetValue('IO' . $i, $tmpValue[2]);
         }
+
         //Index 24 Temperatur
         $DeviceTemperature = str_replace('°C', '', $result[24]);
         $this->SetValue('DeviceTemperature', floatval($DeviceTemperature));
