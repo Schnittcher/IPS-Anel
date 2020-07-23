@@ -3,7 +3,10 @@
     "de": {
       "IP Address": "IP Adresse",
       "Devicename": "Geräte Name",
-      "Instance ID": "Instanz ID"
+      "Instance ID": "Instanz ID",
+      "Starte Discovery": "Starte Discovery",
+      "Please wait - Discovery in progress": "Bitte warten - Discovery in Arbeit",
+      "Discovery in progress": "Discovery in Bearbeitung"
     }
   }
 }

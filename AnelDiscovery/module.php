@@ -17,6 +17,9 @@ class AnelDiscovery extends IPSModule
         parent::Create();
         $this->RegisterPropertyString('Username', 'admin');
         $this->RegisterPropertyString('Password', 'anel');
+        $this->SetBuffer('discoverdDevices', '{}');
+        $this->RegisterMessage(0, IPS_KERNELSTARTED);
+        $this->RegisterTimer('AnelDiscovery', 3600000, 'ANEL_discoverDevices($_IPS[\'TARGET\'])');
     }
 
     public function ApplyChanges()
@@ -28,7 +31,9 @@ class AnelDiscovery extends IPSModule
     public function GetConfigurationForm()
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $Devices = $this->discoverDevices();
+        //$Devices = $this->discoverDevices();
+
+        $Devices = json_decode($this->GetBuffer('discoverdDevices'), true);
 
         $Values = [];
 
@@ -58,8 +63,16 @@ class AnelDiscovery extends IPSModule
         return json_encode($Form);
     }
 
-    public function discoverDevices()
+    public function Discover()
     {
+        $this->UpdateFormField('PopupDiscoveryInProgress', 'visible', true);
+        $this->discoverDevices();
+        $this->UpdateFormField('PopupDiscoveryInProgress', 'visible', false);
+    }
+
+    private function discoverDevices()
+    {
+        $this->LogMessage($this->Translate('Discovery in progress'), KL_NOTIFY);
         $discoveryTimeout = time() + self::WS_DISCOVERY_TIMEOUT;
         $discoveryMessage = 'wer da?';
         $discoveryPort = self::WS_DISCOVERY_MULTICAST_PORT;
@@ -88,7 +101,11 @@ class AnelDiscovery extends IPSModule
             usleep(10000);
         } while (time() < $discoveryTimeout);
         socket_close($sock);
-        return $discoveryList;
+
+        $this->SetBuffer('discoveredDevices', json_encode($discoveryList));
+        $this->ReloadForm();
+
+        return;
     }
 
     private function getAnelInstances($IPAddress)
