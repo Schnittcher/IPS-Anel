@@ -68,7 +68,7 @@ class AnelDiscovery extends IPSModule
         $this->ReloadForm();
     }
 
-    private function discoverDevices()
+    public function discoverDevices()
     {
         $this->LogMessage($this->Translate('Discovery in progress'), KL_NOTIFY);
         $discoveryTimeout = time() + self::WS_DISCOVERY_TIMEOUT;
