@@ -34,20 +34,6 @@
         }
       ],
       "values": []
-    },
-    { "type": "Button", "caption": "Start Discovery", "onClick": "ANEL_Discover($id);" },
-    {
-      "type": "PopupAlert",
-      "name": "PopupDiscoveryInProgress",
-      "visible": false,
-      "popup": {
-          "items": [
-              {
-                 "type": "Label",
-                 "caption": "Please wait - Discovery in progress"
-              }
-          ]
-      }
-  }
+    }
   ]
 }
