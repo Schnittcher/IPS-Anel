@@ -6,6 +6,13 @@
   "actions":
   [
     {
+      "name" : "searchingInfo",
+      "type" : "ProgressBar",
+      "caption" : "The configurator is currently searching for devices. This could take a while...",
+      "indeterminate": true,
+      "visible" : false
+    },
+    {
       "type": "Configurator",
       "name": "Configurator",
       "caption": "Anel Discovery",
