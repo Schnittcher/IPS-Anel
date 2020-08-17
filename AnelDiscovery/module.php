@@ -21,7 +21,7 @@ class AnelDiscovery extends IPSModule
 
         // Only required for pre 5.5
         if (floatval(IPS_GetKernelVersion()) < 5.5) {
-            $this->RegisterTimer('LoadDevicesTimer', 0, 'ANEL_LoadDevices($_IPS["TARGET"]);');
+            $this->RegisterTimer('LoadDevicesTimer', 0, 'ANEL_discoverDevices($_IPS["TARGET"]);');
         }
 
         $this->SetBuffer('discoveredDevices', json_encode([]));
@@ -51,7 +51,7 @@ class AnelDiscovery extends IPSModule
                 $this->SetTimerInterval('LoadDevicesTimer', 200);
             } else {
                 $this->SendDebug('Start', 'OnceTimer', 0);
-                $this->RegisterOnceTimer('LoadDevicesTimer', 'ANEL_LoadDevices($_IPS["TARGET"]);');
+                $this->RegisterOnceTimer('LoadDevicesTimer', 'ANEL_discoverDevices($_IPS["TARGET"]);');
             }
         }
 
