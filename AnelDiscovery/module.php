@@ -39,8 +39,6 @@ class AnelDiscovery extends IPSModule
     public function GetConfigurationForm()
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        //$Devices = $this->discoverDevices();
-
         $Devices = json_decode($this->GetBuffer('discoveredDevices'), true);
 
         if (!json_decode($this->GetBuffer('SearchActive'))) {
@@ -76,20 +74,15 @@ class AnelDiscovery extends IPSModule
         socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, 1);
 
         socket_bind($sock, '0.0.0.0', 77);
-        $this->SendDebug('Start Discovery', '', 0);
         socket_sendto($sock, $discoveryMessage, strlen($discoveryMessage), 0, self::WS_DISCOVERY_MULTICAST_ADDRESS, self::WS_DISCOVERY_MULTICAST_PORT);
         $response = $from = null;
         do {
             if (0 == @socket_recvfrom($sock, $response, 9999, 0, $from, $discoveryPort)) {
                 continue;
             }
+            $this->SendDebug('Receive from', $from, 0);
             $this->SendDebug('Receive', $response, 0);
             $response = explode(':', utf8_decode($response));
-//            $Device = [];
-//            $Device['IP'] = $from;
-//            $Device['deviceName'] = $response[1];
-
-
             $instanceID = $this->getAnelInstances($from);
 
             $AddValue = [
@@ -110,23 +103,19 @@ class AnelDiscovery extends IPSModule
             ];
 
             $Values[] = $AddValue;
-
-//            array_push($discoveryList, $Device);
-            $this->SendDebug('Receive from', $from, 0);
             usleep(10000);
         } while (time() < $discoveryTimeout);
         socket_close($sock);
 
-        
         if (floatval(IPS_GetKernelVersion()) < 5.5) {
             $this->SetTimerInterval('LoadDevicesTimer', 0);
         }
         $this->SetBuffer('SearchActive', json_encode(false));
-        $this->LogMessage($this->Translate('Discovery progress done'), KL_NOTIFY);
-
         $this->SetBuffer('discoveredDevices', json_encode($Values));
         $this->UpdateFormField('configurator', 'values', json_encode($Values));
         $this->UpdateFormField('searchingInfo', 'visible', false);
+
+        $this->LogMessage($this->Translate('Discovery progress done'), KL_NOTIFY);
         return;
     }
 
