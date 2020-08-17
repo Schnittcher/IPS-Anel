@@ -132,7 +132,7 @@ class AnelDiscovery extends IPSModule
         $this->LogMessage($this->Translate('Discovery progress done'), KL_NOTIFY);
 
         $this->SetBuffer('discoveredDevices', json_encode($Values));
-        $this->UpdateFormField('configurator', 'values', $Values);
+        $this->UpdateFormField('configurator', 'values', json_encode($Values));
         $this->UpdateFormField('searchingInfo', 'visible', false);
         return;
     }
