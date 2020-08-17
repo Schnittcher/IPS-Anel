@@ -55,17 +55,9 @@ class AnelDiscovery extends IPSModule
             }
         }
 
-        $Form['actions'][0]['visiable'] = count($Devices) == 0;
+        $Form['actions'][0]['visible'] = count($Devices) == 0;
         $Form['actions'][1]['values'] = $Devices;
         return json_encode($Form);
-    }
-
-    public function Discover()
-    {
-        $this->UpdateFormField('PopupDiscoveryInProgress', 'visible', true);
-        $this->discoverDevices();
-        $this->UpdateFormField('PopupDiscoveryInProgress', 'visible', false);
-        $this->ReloadForm();
     }
 
     public function discoverDevices()
@@ -75,6 +67,8 @@ class AnelDiscovery extends IPSModule
         $discoveryMessage = 'wer da?';
         $discoveryPort = self::WS_DISCOVERY_MULTICAST_PORT;
         $discoveryList = [];
+
+        $Values = [];
 
         $sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
         socket_set_option($sock, SOL_SOCKET, SO_REUSEADDR, 1);
@@ -91,23 +85,16 @@ class AnelDiscovery extends IPSModule
             }
             $this->SendDebug('Receive', $response, 0);
             $response = explode(':', utf8_decode($response));
-            $Device = [];
-            $Device['IP'] = $from;
-            $Device['deviceName'] = $response[1];
-            array_push($discoveryList, $Device);
-            $this->SendDebug('Receive from', $from, 0);
-            usleep(10000);
-        } while (time() < $discoveryTimeout);
-        socket_close($sock);
+//            $Device = [];
+//            $Device['IP'] = $from;
+//            $Device['deviceName'] = $response[1];
 
-        $Values = [];
 
-        foreach ($discoveryList as $Device) {
-            $instanceID = $this->getAnelInstances($Device['IP']);
+            $instanceID = $this->getAnelInstances($from);
 
             $AddValue = [
-                'IPAddress'             => $Device['IP'],
-                'name'                  => $Device['deviceName'],
+                'IPAddress'             => $from,
+                'name'                  => $response[1],
                 'instanceID'            => $instanceID
             ];
 
@@ -115,7 +102,7 @@ class AnelDiscovery extends IPSModule
                 [
                     'moduleID'      => '{13F0B37E-30C9-C043-A5AC-2D9B6A90E9F2}',
                     'configuration' => [
-                        'IPAddress' => $Device['IP'],
+                        'IPAddress' => $from,
                         'Username'  => $this->ReadPropertyString('Username'),
                         'Password'  => $this->ReadPropertyString('Password')
                     ]
@@ -123,8 +110,14 @@ class AnelDiscovery extends IPSModule
             ];
 
             $Values[] = $AddValue;
-        }
 
+//            array_push($discoveryList, $Device);
+            $this->SendDebug('Receive from', $from, 0);
+            usleep(10000);
+        } while (time() < $discoveryTimeout);
+        socket_close($sock);
+
+        
         if (floatval(IPS_GetKernelVersion()) < 5.5) {
             $this->SetTimerInterval('LoadDevicesTimer', 0);
         }
