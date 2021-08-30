@@ -71,11 +71,11 @@ class AnelHUT extends IPSModule
             $this->SetValue('DeviceTemperature', floatval($DeviceTemperature));
         }
 
-        if (array_key_exists(26, $reult)) {
+        if (array_key_exists(26, $result)) {
             //Index 26 DeviceTyp
         $DeviceTyp = $result[26]; //a = ADV; i = IO; h = HUT ; o = ONE
         }
-        if (array_key_exists(27, $reult)) {
+        if (array_key_exists(27, $result)) {
             //Index 27 Power Metering //p = yes; n = no
             $PowerMetering = $result[27];
             $SensorIndex = 0;
