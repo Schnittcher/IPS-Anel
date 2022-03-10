@@ -1,14 +1,14 @@
 {
-  "translations": {
-    "de": {
-      "IP Address": "IP Adresse",
-      "Devicename": "Geräte Name",
-      "Instance ID": "Instanz ID",
-      "Starte Discovery": "Starte Discovery",
-      "Please wait - Discovery in progress": "Bitte warten - Discovery in Arbeit",
-      "Discovery in progress": "Discovery in Bearbeitung",
-      "Discovery progress done": "Discovery abgeschlossen",
-      "The configurator is currently searching for devices. This could take a while...": "Der Konfigurator sucht derzeit nach Geräten. Dies könnte eine Weile dauern ..."
+    "translations": {
+        "de": {
+            "IP Address": "IP Adresse",
+            "Devicename": "Geräte Name",
+            "Instance ID": "Instanz ID",
+            "Starte Discovery": "Starte Discovery",
+            "Please wait - Discovery in progress": "Bitte warten - Discovery in Arbeit",
+            "Discovery in progress": "Discovery in Bearbeitung",
+            "Discovery progress done": "Discovery abgeschlossen",
+            "The configurator is currently searching for devices. This could take a while...": "Der Konfigurator sucht derzeit nach Geräten. Dies könnte eine Weile dauern ..."
+        }
     }
-  }
 }

@@ -1,15 +1,17 @@
 {
-  "id": "{5D168B96-2D34-CF9A-7695-CA0F3AE6001C}",
-  "name": "AnelDiscovery",
-  "type": 5,
-  "vendor": "Anel",
-  "aliases": ["Anel Discovery"],
-  "parentRequirements": [
-    "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
-],
-"childRequirements": [],
-"implemented": [
-    "{018EF6B5-AB94-40C6-AA53-46943E824ACF}"
-],
-  "prefix": "ANEL"
+    "id": "{5D168B96-2D34-CF9A-7695-CA0F3AE6001C}",
+    "name": "AnelDiscovery",
+    "type": 5,
+    "vendor": "Anel",
+    "aliases": [
+        "Anel Discovery"
+    ],
+    "parentRequirements": [
+        "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{018EF6B5-AB94-40C6-AA53-46943E824ACF}"
+    ],
+    "prefix": "ANEL"
 }
